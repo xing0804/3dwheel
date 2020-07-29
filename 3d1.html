@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D动画</title>
+    <style>
+        .scene {
+            height: 300px;
+            width: 300px;
+            perspective: 800px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            border: 1px solid purple;
+
+        }
+
+        .leftbtn,
+        .rightbtn {
+            background: #000;
+            color: #ffffff;
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-size: 20px;
+        }
+
+        .leftbtn {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin: auto;
+            margin-left: -250px;
+            cursor: pointer;
+        }
+
+        .rightbtn {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 50%;
+            margin: auto;
+            margin-right: -250px;
+            cursor: pointer;
+        }
+
+        .box {
+            height: 300px;
+            width: 300px;
+            transform-style: preserve-3d;
+            transition: transform 1s ease;
+            transform-origin: center center -150px;
+            cursor: pointer;
+        }
+
+        /* .scene:hover .box {
+            transform: rotateX(-90deg);
+
+        } */
+
+        .face {
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .face img {
+            width: 300px;
+            height: 300px;
+        }
+
+        .face:nth-child(1) {
+            background-color: paleturquoise;
+            transform: rotateX(-90deg);
+            transform-origin: top;
+        }
+
+        .face:nth-child(2) {
+            background-color: palevioletred;
+            transform: rotateY(90deg);
+            transform-origin: left;
+        }
+
+        .face:nth-child(3) {
+            background-color: peachpuff;
+            transform: translateZ(-300px) rotateX(-180deg);
+        }
+
+        .face:nth-child(4) {
+            background-color: rebeccapurple;
+            transform: rotateY(-90deg);
+            transform-origin: right;
+        }
+
+        .face:nth-child(5) {
+            background-color: royalblue;
+            transform: rotateX(90deg);
+            transform-origin: bottom;
+        }
+
+        .face:nth-child(6) {
+            background-color: slateblue;
+        }
+
+        .btn {
+            height: 20px;
+            width: 200px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            margin-top: 600px;
+            list-style: none;
+        }
+
+        .btn li {
+            float: left;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #777;
+            text-align: center;
+            line-height: 20px;
+            color: #ffffff;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        .btn li:nth-child(1) {
+            background: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="scene">
+        <div class="box">
+            <div class="face">
+                <img src="imgs/3.png" alt="">
+            </div>
+            <div class="face">
+                <img src="imgs/2.png" alt="">
+            </div>
+            <div class="face">
+                <img src="imgs/1.png" alt="">
+            </div>
+            <div class="face">
+                <img src="imgs/4.png" alt="">
+            </div>
+            <div class="face">
+                <img src="imgs/5.png" alt="">
+            </div>
+            <div class="face">
+                <img src="imgs/6.png" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="leftbtn"><</div>
+    <div class="rightbtn">></div>
+    <ul class="btn">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+    </ul>
+
+
+            <script>
+
+                var box = document.querySelector(".box");
+                var btns = document.querySelectorAll(".btn li");
+
+                var leftbtn = document.querySelector(".leftbtn");
+                var rightbtn = document.querySelector(".rightbtn");
+
+                var angle = 90;
+                var num = 0;
+
+                function run() {
+                    num++;
+                    box.style.transform = "rotateX(" + num * angle + "deg)";
+                    for (var i = 0; i < btns.length; i++) {
+                        btns[i].style.background = "#777"
+                    }
+                    btns[num % 4].style.background = "#000";
+                }
+                var t = setInterval(run, 3000);
+                box.onmouseover = function () {
+                    clearInterval(t);
+                }
+                box.onmouseout = function () {
+                    t = setInterval(run, 3000);
+                }
+                window.onblur=function(){
+                    clearInterval(t);
+                }
+                window.onfocus=function(){
+                    t = setInterval(run, 3000);
+                }
+
+                leftbtn.onclick = function () {
+                    num--;
+                    for (var i = 0; i < btns.length; i++) {
+                        btns[i].style.background = "#777"
+                    }
+                    if (num < 0) {
+                        var current = -num;
+                    } else {
+                        var current = num;
+                    }
+                    btns[current % 4].style.background = "#000";
+                    box.style.transform = "rotateX(" + num * angle + "deg)";
+                }
+
+                rightbtn.onclick = function () {
+                    num++;
+                    for (var i = 0; i < btns.length; i++) {
+                        btns[i].style.background = "#777"
+                    }
+                    if (num < 0) {
+                        var current = -num;
+                    } else {
+                        var current = num;
+                    }
+                    btns[current % 4].style.background = "#000";
+                    box.style.transform = "rotateX(" + num * angle + "deg)";
+                }
+
+                for (let i = 0; i < btns.length; i++) {
+                    btns[i].onclick = function () {
+                        num += (Math.abs(num) % 4 + i);
+                        box.style.transform = "rotateX(" + num * angle + "deg)";
+                        for (var j = 0; j < btns.length; j++) {
+                            btns[j].style.background = "#777"
+                        }
+                        this.style.background="#000";
+                    }
+                }
+
+                
+
+                function mousedir(obj,down,up,down1,up1){
+                    obj.onmousedown=function(ev){
+
+                        var startx=ev.clientX;
+                        var starty=ev.clientY;
+
+                        var movex,movey;
+
+                        document.onmousemove=function(ev){
+                            movex=ev.clientX;
+                            movey=ev.clientY;
+                            if(movey>starty){
+                                down(Math.abs(movey-starty));
+                            }else{
+                                up(Math.abs(movey-starty));
+                            }
+                            ev.preventDefault();
+                        }
+                        document.onmouseup=function(){
+                            if(movey>starty){
+                                down1(Math.abs(movey-starty));
+                            }else{
+                                up1(Math.abs(movey-starty));
+                            }
+                            document.onmousemove=null;
+                            document.onmouseup=null;
+                        }
+                    }
+                }
+
+                mousedir(box,function(val){
+                    box.style.transition="none";
+                    box.style.transform = "rotateX(" + ((num * angle)+(-val)) + "deg)";
+                },function(val){
+                    box.style.transition="none";
+                    box.style.transform = "rotateX(" + ((num * angle)+val) + "deg)";
+                },function(val){
+                    box.style.transition="transform 1s ease";
+                    if(val>40){
+                        num--;
+                    }
+                    box.style.transform = "rotateX(" + num * angle + "deg)";
+                    for (var i = 0; i < btns.length; i++) {
+                        btns[i].style.background = "#777"
+                    }
+                    if (num < 0) {
+                        var current = -num;
+                    } else {
+                        var current = num;
+                    }
+                    btns[current % 4].style.background = "#000";
+                },function(val){
+                    box.style.transition="transform 1s ease";
+                    if(val>40){
+                        num++;
+                    }
+                    box.style.transform = "rotateX(" + num * angle + "deg)";
+                    for (var i = 0; i < btns.length; i++) {
+                        btns[i].style.background = "#777"
+                    }
+                    if (num < 0) {
+                        var current = -num;
+                    } else {
+                        var current = num;
+                    }
+                    btns[current % 4].style.background = "#000";
+                })
+
+
+            </script>
+</body>
+
+</html>
